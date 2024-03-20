@@ -3,7 +3,8 @@ import uuid
 from datetime import datetime
 
 def get_dummy_id():
-    return uuid.uuid4()
+    return uuid.uuid4().hex
+
 
 def get_dummy_persona_tagging(n=100):
     dummy_tag = "DUMMY_PERSONA_TAGGING_{}"
@@ -30,10 +31,17 @@ def get_dummy_record(cust_id):
     data['timestamp'] = datetime.now().timestamp()
     return data
 
+#print(json.dumps(get_dummy_record(get_dummy_id())))
+#exit()
 
 
-print(get_dummy_record(get_dummy_id()))
+import redis
 
-#for i in range(0, 10):
-#    print(get_dummy_id())
-
+r = redis.StrictRedis(host="172.19.16.13", port=6379, password="qqgoup1L!")
+#r.set("foo1", "123.0")
+for i in range(1, 1000000):
+    dummy_id = get_dummy_id()
+    dummy_record = get_dummy_record(dummy_id)
+    r.set(dummy_id, json.dumps(dummy_record))
+    if i % 100000 == 0:
+        print(f"record {i} inserted")
