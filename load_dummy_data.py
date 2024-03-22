@@ -36,12 +36,17 @@ def get_dummy_record(cust_id):
 
 
 import redis
-
-r = redis.StrictRedis(host="172.19.16.13", port=6379, password="qqgoup1L!")
+import time
+r = redis.StrictRedis(host="172.19.16.8", port=6379, password="qqgoup1L!") 
 #r.set("foo1", "123.0")
-for i in range(1, 1000000):
+start_time = time.time()
+for i in range(1, 1800000):
     dummy_id = get_dummy_id()
-    dummy_record = get_dummy_record(dummy_id)
-    r.set(dummy_id, json.dumps(dummy_record))
+    r.set(dummy_id, json.dumps(get_dummy_record(dummy_id)))
+ 
     if i % 100000 == 0:
+        sub_end_time = time.time()
         print(f"record {i} inserted")
+        print(f"sub_end_duration: ", sub_end_time - start_time)
+end_time = time.time()
+print("End_time: ", end_time - start_time)
