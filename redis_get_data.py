@@ -15,9 +15,12 @@ for i in range(how_many_times):
 
     time_difference = end_time - start_time
     run_time_list.append(time_difference)
-
+    if i == 1001:
+        # preview the data
+        print(random_value)
 import statistics as stat
 print("Mean: ", stat.mean(run_time_list))
 print("Median: ", stat.median(run_time_list))
 print("Max: ", max(run_time_list))
 print("Min: ", min(run_time_list))
+print(run_time_list[0])
